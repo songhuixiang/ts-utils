@@ -3,9 +3,8 @@
         "target": "es2020",
         "module": "commonjs",
         "declaration": true,
-        "noImplicitAny": true,
+        "strict": true,
         "noImplicitThis": false,
-        "strictNullChecks": true,
         "outDir": "./lib"
     },
     "include": ["src"],
