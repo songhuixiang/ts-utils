@@ -58,3 +58,43 @@ jQuery(element).on("click", throttled);
 // 取消一个 trailing 的节流调用。
 jQuery(window).on("popstate", throttled.cancel);
 ```
+
+# 事件 events
+
+-   **emit** is used to trigger an event
+-   **on** is used to add a callback function that's going to be executed when the event is triggered
+
+**例子**
+
+```typescript
+const emitter = new Emitter();
+
+// Create FirstEvent
+const firstEvent = emitter.createEvent<(data: string) => void>();
+// Create SecondEvent
+const secondEvent = emitter.createEvent<(data: string) => void>();
+
+// Create CompositeDisposable
+const disposable = new CompositeDisposable();
+
+// Subscribe FirstEvent
+disposable.add(
+    firstEvent.on((data) => {
+        console.log(data);
+    })
+);
+// Subscribe SecondEvent
+disposable.add(
+    secondEvent.on((data) => {
+        console.log(data);
+    })
+);
+
+// Raising FirstEvent
+firstEvent.emit("This is my first event emitter example.");
+// Raising SecondEvent
+secondEvent.emit("This is my second event emitter example.");
+
+// Remove firstEvent and secondEvent listener
+disposable.dispose();
+```

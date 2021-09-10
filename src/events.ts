@@ -1,28 +1,3 @@
-/**
-用法:
-class User {
-    private name: string;
-    private emitter = new Emitter();
-    onNameChangeEvent = this.emitter.createEvent<(name: string) => void>("did-change-name");
-
-    setName(name: string) {
-        if (name != this.name) {
-            this.onNameChangeEvent.emit(this.name);
-        }
-    }
-}
-
-class Something {
-    disposables = new CompositeDisposable();
-    constructor(user: User) {
-        this.disposables.add(user.onNameChangeEvent.on(() => {}));
-    }
-    destroy() {
-        this.disposables.dispose();
-    }
-}
-*/
-
 export class Disposable {
     private _disposed: boolean;
     private _disposalAction: () => void;
@@ -114,6 +89,10 @@ export class Event<T extends (...args: any[]) => any> {
 
     hasHandler(handler: T) {
         return this.emitter.hasHandler(this.name, handler);
+    }
+
+    handlerCount() {
+        return this.emitter.handlerCountForEventName(this.name);
     }
 
     readonly emit = ((...argsparam: any[]): Promise<ReturnType<T>>[] => {
@@ -252,7 +231,7 @@ export class Emitter {
         return ret;
     }
 
-    listenerCountForEventName(eventName: string | symbol) {
+    handlerCountForEventName(eventName: string | symbol) {
         return this._handlersByEventName.get(eventName)?.length ?? 0;
     }
 
