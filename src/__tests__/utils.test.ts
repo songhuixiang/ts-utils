@@ -1,3 +1,4 @@
+/** 
 import { CompositeDisposable, Emitter } from "../events";
 test("events", () => {
     const emitter = new Emitter();
@@ -30,4 +31,33 @@ test("events", () => {
 
     // Remove all listeners
     disposable.dispose();
+});
+*/
+
+import { timeoutPromise, delay } from "../utils";
+test("timeoutPromise", () => {
+    const doSomething = function () {
+        return new Promise<string>((resolve, reject) => {
+            delay(3).then(() => {
+                resolve("done");
+            });
+        });
+    };
+
+    // Apply a timeout of 5 seconds to doSomething
+    let doIt = timeoutPromise(doSomething(), 5);
+
+    // Wait for the promise to get resolved
+    doIt.then((response) => {
+        // Use response
+        console.log("doSomething completed");
+    });
+
+    // Wait for the promise to get rejected or timed out
+    doIt.catch((error) => {
+        // Deal with error
+        console.log("Timeout exceeded");
+    });
+
+    return doIt;
 });
