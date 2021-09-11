@@ -34,7 +34,8 @@ test("events", () => {
 });
 */
 
-import { timeoutPromise, delay } from "../utils";
+import { timeoutPromise, delay, arrayDiff } from "../utils";
+/** 
 test("timeoutPromise", () => {
     const doSomething = function () {
         return new Promise<string>((resolve, reject) => {
@@ -60,4 +61,11 @@ test("timeoutPromise", () => {
     });
 
     return doIt;
+});
+*/
+
+test("arrayDiss", () => {
+    const array1 = [1, 2, 3];
+    const array2 = [1, 2, 3, 4, 5];
+    console.log(arrayDiff(array1, array2)); // [4, 5]
 });
