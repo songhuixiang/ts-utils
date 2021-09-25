@@ -32,34 +32,24 @@ export namespace random {
     /**
      * Given an array, pick a random element and return it
      * @param arr
-     * @returns
-     */
-    export function pickone<T>(arr: Array<T>): T {
-        if (arr.length === 0) {
-            throw new RangeError("pickone: Cannot pickone() from an empty array");
-        }
-        return arr[random.integer(0, arr.length - 1)];
-    }
-
-    /**
-     *
-     * @param arr
      * @param count
      * @returns
      */
-    export function pick<T>(arr: Array<T>, count: number = 1): Array<T> {
+    export function pick<T>(arr: Array<T>): T;
+    export function pick<T>(arr: Array<T>, count: number): Array<T>;
+    export function pick<T>(arr: Array<T>, count?: number): T | Array<T> {
         if (arr.length === 0) {
             throw new RangeError("pick: Cannot pick() from an empty array");
         }
-        if (count === 1) {
-            return [random.pickone(arr)];
+        if (count === undefined) {
+            return arr[random.integer(0, arr.length - 1)];
         } else {
             return random.shuffle(arr).slice(0, count);
         }
     }
 
     /**
-     * Given an array, scramble the order and return it.
+     * 洗牌: Given an array, scramble the order and return it.
      * @param arr
      * @returns
      */
@@ -81,7 +71,7 @@ export namespace random {
     }
 
     /**
-     * Returns a single item from an array with relative weighting of odds
+     * 权重随机: Returns a single item from an array with relative weighting of odds
      * @param arr
      * @param weights
      * @param trim
@@ -136,7 +126,7 @@ export namespace random {
     }
 
     /**
-     * Generate Random Point in a Circle.
+     * Generate Random Point in a Circle. Default is an Unit Circle
      * @param radius 1
      * @param x_center 0
      * @param y_center 0
@@ -151,7 +141,7 @@ export namespace random {
     }
 
     /**
-     * Generate Random Point on a Circle.
+     * Generate Random Point on a Circle. Default is an Unit Circle
      * @param radius 1
      * @param x_center 0
      * @param y_center 0
