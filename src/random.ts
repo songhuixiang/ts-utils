@@ -21,10 +21,11 @@ export namespace random {
 
     /**
      * Get a random boolean value
+     * @param likelihood The default likelihood of success (returning true) is 50%.
      * @returns
      */
-    export function boolean() {
-        return Math.random() >= 0.5;
+    export function boolean(likelihood: number = 50) {
+        return Math.random() * 100 < likelihood;
     }
 
     /**
@@ -57,13 +58,54 @@ export namespace random {
     }
 
     /**
-     * Get a random item from an array.
+     * Given an array, pick a random element and return it
      * @param arr
      * @returns
      */
-    export function fromArr<T>(arr: Array<T>): T {
-        let idx = random.int(0, arr.length - 1);
-        return arr[idx];
+    export function pickone<T>(arr: Array<T>): T {
+        if (arr.length === 0) {
+            throw new RangeError("pickone: Cannot pickone() from an empty array");
+        }
+        return arr[random.int(0, arr.length - 1)];
+    }
+
+    /**
+     *
+     * @param arr
+     * @param count
+     * @returns
+     */
+    export function pick<T>(arr: Array<T>, count: number): Array<T> {
+        if (arr.length === 0) {
+            throw new RangeError("pick: Cannot pick() from an empty array");
+        }
+        if (count === 1) {
+            return [random.pickone(arr)];
+        } else {
+            return random.shuffle(arr).slice(0, count);
+        }
+    }
+
+    /**
+     * Given an array, scramble the order and return it.
+     * @param arr
+     * @returns
+     */
+    export function shuffle<T>(arr: Array<T>): Array<T> {
+        let new_array: Array<T> = [],
+            length = arr.length,
+            source_indexes = Array.apply(null, Array(length)).map((_, i) => i),
+            last_source_index = length - 1;
+
+        for (let i = 0; i < length; i++) {
+            let selected_source_index = random.int(0, last_source_index);
+            let j = source_indexes[selected_source_index];
+            new_array[i] = arr[j];
+            source_indexes[selected_source_index] = source_indexes[last_source_index];
+            last_source_index -= 1;
+        }
+
+        return new_array;
     }
 
     /**
