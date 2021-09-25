@@ -3,9 +3,9 @@ export namespace random {
      * Get a random integer in [ min, max ]
      * @param min [min=0] - Lower bound (integer, inclusive)
      * @param max [max=1] - Upper bound (integer, inclusive)
-     * @returns
+     * @returns min <= random integer <= max
      */
-    export function int(min: number = 0, max: number = 1) {
+    export function integer(min: number = 0, max: number = 1) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
@@ -13,48 +13,20 @@ export namespace random {
      * Get a random floating point number in [ min, max )
      * @param min [min=0] - Lower bound (float, inclusive)
      * @param max [max=1] - Upper bound (float, exclusive)
-     * @returns
+     * @param fixed By default it will return a fixed number of at most 4 digits after the decimal.
+     * @returns min <= random float < max
      */
-    export function float(min: number = 0, max: number = 1) {
-        return Math.random() * (max - min) + min;
+    export function float(min: number = 0, max: number = 1, fixed: number = 4) {
+        return Number((Math.random() * (max - min) + min).toFixed(fixed));
     }
 
     /**
      * Get a random boolean value
-     * @param likelihood The default likelihood of success (returning true) is 50%.
+     * @param percent The default percent of success (returning true) is 50%.
      * @returns
      */
-    export function boolean(likelihood: number = 50) {
-        return Math.random() * 100 < likelihood;
-    }
-
-    /**
-     * Generate Random Point in a Circle.
-     * @param radius 1
-     * @param x_center 0
-     * @param y_center 0
-     * @returns
-     */
-    export function inCircle(radius: number = 1, x_center: number = 0, y_center: number = 0) {
-        let ang = Math.random() * 2 * Math.PI,
-            hyp = Math.sqrt(Math.random()) * radius,
-            adj = Math.cos(ang) * hyp,
-            opp = Math.sin(ang) * hyp;
-        return { x: x_center + adj, y: y_center + opp };
-    }
-
-    /**
-     * Generate Random Point on a Circle.
-     * @param radius 1
-     * @param x_center 0
-     * @param y_center 0
-     * @returns
-     */
-    export function onCircle(radius: number = 1, x_center: number = 0, y_center: number = 0) {
-        let ang = Math.random() * 2 * Math.PI,
-            adj = Math.cos(ang) * radius,
-            opp = Math.sin(ang) * radius;
-        return { x: x_center + adj, y: y_center + opp };
+    export function boolean(percent: number = 50) {
+        return Math.random() * 100 < percent;
     }
 
     /**
@@ -66,7 +38,7 @@ export namespace random {
         if (arr.length === 0) {
             throw new RangeError("pickone: Cannot pickone() from an empty array");
         }
-        return arr[random.int(0, arr.length - 1)];
+        return arr[random.integer(0, arr.length - 1)];
     }
 
     /**
@@ -75,7 +47,7 @@ export namespace random {
      * @param count
      * @returns
      */
-    export function pick<T>(arr: Array<T>, count: number): Array<T> {
+    export function pick<T>(arr: Array<T>, count: number = 1): Array<T> {
         if (arr.length === 0) {
             throw new RangeError("pick: Cannot pick() from an empty array");
         }
@@ -98,7 +70,7 @@ export namespace random {
             last_source_index = length - 1;
 
         for (let i = 0; i < length; i++) {
-            let selected_source_index = random.int(0, last_source_index);
+            let selected_source_index = random.integer(0, last_source_index);
             let j = source_indexes[selected_source_index];
             new_array[i] = arr[j];
             source_indexes[selected_source_index] = source_indexes[last_source_index];
@@ -161,5 +133,34 @@ export namespace random {
         }
 
         return chosen;
+    }
+
+    /**
+     * Generate Random Point in a Circle.
+     * @param radius 1
+     * @param x_center 0
+     * @param y_center 0
+     * @returns
+     */
+    export function inCircle(radius: number = 1, x_center: number = 0, y_center: number = 0) {
+        let ang = Math.random() * 2 * Math.PI,
+            hyp = Math.sqrt(Math.random()) * radius,
+            adj = Math.cos(ang) * hyp,
+            opp = Math.sin(ang) * hyp;
+        return { x: x_center + adj, y: y_center + opp };
+    }
+
+    /**
+     * Generate Random Point on a Circle.
+     * @param radius 1
+     * @param x_center 0
+     * @param y_center 0
+     * @returns
+     */
+    export function onCircle(radius: number = 1, x_center: number = 0, y_center: number = 0) {
+        let ang = Math.random() * 2 * Math.PI,
+            adj = Math.cos(ang) * radius,
+            opp = Math.sin(ang) * radius;
+        return { x: x_center + adj, y: y_center + opp };
     }
 }

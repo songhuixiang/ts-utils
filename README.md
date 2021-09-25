@@ -99,7 +99,17 @@ secondEvent.emit("This is my second event emitter example.");
 disposable.dispose();
 ```
 
-# 为 Promise 添加超时限制 timeoutPromise
+# 随机数 random
+
+**例子**
+
+```typescript
+import { random } from "../random";
+```
+
+# 工具集 utils
+
+## 为 Promise 添加超时限制 timeoutPromise
 
 Sometimes a promise may take too long to resolve or reject, and sometimes we just can’t wait for it.
 
