@@ -110,10 +110,10 @@ export function cutNumber(number: number, no = 2) {
  * 浮点数判等
  * @param a
  * @param b
- * @param tolerance 公差默认为 Number.EPSILON
+ * @param tolerance 公差默认为 1e-6
  * @returns
  */
-export function equals(a: number, b: number, tolerance = Number.EPSILON) {
+export function equals(a: number, b: number, tolerance = 1e-6) {
     // let f1 = 0.1 + 0.2;
     // let f2 = 0.3;
     // console.log(Math.abs(f1 - f2) < Number.EPSILON); // 'True - Yippeee!!!'
