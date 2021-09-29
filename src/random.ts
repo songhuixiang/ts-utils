@@ -154,26 +154,29 @@ export namespace random {
         return { x: x_center + adj, y: y_center + opp };
     }
 
+    let spare: number;
+    let hasSpare: boolean = false;
     /**
      * 正态分布随机：默认情况下，均值为0，标准差为1，即标准正态分布。
      * @param mean 0
-     * @param dev 1
+     * @param stdDev 1
      * @returns
      */
-    export function normal(mean: number = 0, dev: number = 1) {
-        let s, u, v, norm;
-        do {
-            // U and V are from the uniform distribution on (-1, 1)
-            u = Math.random() * 2 - 1;
-            v = Math.random() * 2 - 1;
-
-            s = u * u + v * v;
-        } while (s >= 1 || s === 0);
-
-        // Compute the standard normal variate
-        norm = u * Math.sqrt((-2 * Math.log(s)) / s);
-
-        // Shape and scale
-        return dev * norm + mean;
+    export function normal(mean: number = 0, stdDev: number = 1) {
+        if (hasSpare) {
+            hasSpare = false;
+            return spare * stdDev + mean;
+        } else {
+            let u, v, s;
+            do {
+                u = Math.random() * 2 - 1;
+                v = Math.random() * 2 - 1;
+                s = u * u + v * v;
+            } while (s >= 1 || s === 0);
+            s = Math.sqrt((-2.0 * Math.log(s)) / s);
+            spare = v * s;
+            hasSpare = true;
+            return mean + stdDev * u * s;
+        }
     }
 }
