@@ -72,6 +72,7 @@ test("arrayDiss", () => {
 });
 */
 
+/** 
 import { random } from "../random";
 test("random", () => {
     random.integer(); // min <= random integer <= max, default min = 0, max = 1
@@ -125,4 +126,61 @@ test("random", () => {
     // => 0.5223593379226711
     random.normal(100, 15); // 例如，要获得一个随机的智商(它的平均值是100，标准偏差是15)，这是获得更真实结果的一种非常强大的方法，因为“纯随机”往往无法接近真实世界。
     // => 93.98853406991051
+});
+*/
+
+import { Diff, ElementType, Intersection, Keys, Optional, Subtract, Values } from "../types";
+test("types", () => {
+    /** 
+    type Props = { name: string; age: number; visible: boolean };
+    // Expect: string
+    type NameType = ElementType<Props, "name">;
+
+    type Tuple = [boolean, number];
+    // Expect: boolean
+    type A = ElementType<Tuple, 0>;
+    // Expect: number
+    type B = ElementType<Tuple, 1>;
+
+    type Arr = boolean[];
+    // Expect: boolean
+    type ItemsType = ElementType<Arr, number>;
+
+    type Obj = { [key: string]: number };
+    // Expect: number
+    type ValuesType = ElementType<Obj, string>;
+    */
+    /** 
+    type Props = { name: string; age: number; visible: boolean };
+
+    // Expect: "name" | "age" | "visible"
+    type PropsKeys = Keys<Props>;
+    let a: PropsKeys = "name";
+    */
+    // type Props = { name: string; age: number; visible: boolean };
+    // Expect: string | number | boolean
+    // type PropsValues = Values<Props>;
+    // type Props = { name: string; age: number; visible: boolean };
+    // type DefaultProps = { age: number };
+    // Expect: { name: string; visible: boolean; }
+    // type RequiredProps = Diff<Props, DefaultProps>;
+
+    // type Props = { name: string; age: number; visible: boolean };
+    // type DefaultProps = { age: number; address: string };
+
+    // Expect: { age: number; }
+    // type DuplicatedProps = Intersection<Props, DefaultProps>;
+
+    // type Props = { name: string; age: number; visible: boolean };
+    // type DefaultProps = { age: number };
+
+    // Expect: { name: string; visible: boolean; }
+    // type RequiredProps = Subtract<Props, DefaultProps>;
+
+    type Props = { name: string; age: number; visible: boolean };
+
+    // Expect: { name?: string; age?: number; visible?: boolean; }
+    type Props1 = Optional<Props>;
+    // Expect: { name: string; age?: number; visible?: boolean; }
+    type Props2 = Optional<Props, "age" | "visible">;
 });

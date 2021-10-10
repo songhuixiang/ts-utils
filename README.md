@@ -159,6 +159,150 @@ random.normal(100, 15); // 例如，要获得一个随机的智商(它的平均�
 // => 93.9885340699105
 ```
 
+# 通用类型 types
+
+为 TypeScript 项目提供一组通用类型，这些类型是惯用的，是现有 TypeScript 映射类型的补充。
+
+**Primitive**
+
+-   在 JavaScript 中，(primitive types)基本类型为: string | number | bigint | boolean | symbol | null | undefined
+
+```typescript
+export type Primitive = string | number | bigint | boolean | symbol | null | undefined;
+export const isPrimitive = (val: unknown): val is Primitive => {
+    if (val === null || val === undefined) {
+        return true;
+    }
+    switch (typeof val) {
+        case "string":
+        case "number":
+        case "bigint":
+        case "boolean":
+        case "symbol":
+            return true;
+        default:
+            return false;
+    }
+};
+```
+
+**Falsy**
+
+-   在 TypeScript 中表示错误值的类型：false | "" | 0 | null | undefined
+
+```typescript
+export type Falsy = false | "" | 0 | null | undefined;
+export const isFalsy = (val: unknown): val is Falsy => !val;
+```
+
+**Nullish**
+
+-   在 TypeScript 中表示空值的类型：null | undefined
+
+```typescript
+export type Nullish = null | undefined;
+export const isNullish = (val: unknown): val is Nullish => val == null;
+```
+
+**DeepReadonly\<T\>**
+
+-   使对象类型的所有属性为只读
+
+**ElementType\<T, K\>**
+
+-   获取数组、元组或类型为 T 的对象中匹配给定索引类型 K 的元素的类型
+
+```typescript
+type Props = { name: string; age: number; visible: boolean };
+// Expect: string
+type NameType = ElementType<Props, "name">;
+
+type Tuple = [boolean, number];
+// Expect: boolean
+type A = ElementType<Tuple, 0>;
+// Expect: number
+type B = ElementType<Tuple, 1>;
+
+type Arr = boolean[];
+// Expect: boolean
+type ItemsType = ElementType<Arr, number>;
+
+type Obj = { [key: string]: number };
+// Expect: number
+type ValuesType = ElementType<Obj, string>;
+```
+
+**Keys\<T\>**
+
+-   获取对象类型 T 中所有键的联合类型
+
+```typescript
+type Props = { name: string; age: number; visible: boolean };
+
+// Expect: "name" | "age" | "visible"
+type PropsKeys = Keys<Props>;
+```
+
+**Values\<T\>**
+
+-   获取对象类型 T 中所有值的联合类型
+
+```typescript
+type Props = { name: string; age: number; visible: boolean };
+
+// Expect: string | number | boolean
+type PropsValues = Values<Props>;
+```
+
+**Diff\<T, U\>**
+
+-   获取给定对象类型 T 和 U 的集合差(T \ U)
+
+```typescript
+type Props = { name: string; age: number; visible: boolean };
+type DefaultProps = { age: number };
+
+// Expect: { name: string; visible: boolean; }
+type RequiredProps = Diff<Props, DefaultProps>;
+```
+
+**Intersection\<T, U\>**
+
+-   选取对象类型 T 和 U 的交叉属性
+
+```typescript
+type Props = { name: string; age: number; visible: boolean };
+type DefaultProps = { age: number; address: string };
+
+// Expect: { age: number; }
+type DuplicatedProps = Intersection<Props, DefaultProps>;
+```
+
+**Subtract\<T, U\>**
+
+-   从 T 中移除 U 中存在的属性(U 具有 T 的属性的子集)
+
+```typescript
+type Props = { name: string; age: number; visible: boolean };
+type DefaultProps = { age: number };
+
+// Expect: { name: string; visible: boolean; }
+type RequiredProps = Subtract<Props, DefaultProps>;
+```
+
+**Optional\<T, K\>**
+
+-   从 T 使一组属性键 K 成为可选的
+
+```typescript
+type Props = { name: string; age: number; visible: boolean };
+
+// Expect: { name?: string; age?: number; visible?: boolean; }
+type Props1 = Optional<Props>;
+// Expect: { name: string; age?: number; visible?: boolean; }
+type Props2 = Optional<Props, "age" | "visible">;
+```
+
 # 工具集 utils
 
 ## 为 Promise 添加超时限制 timeoutPromise
