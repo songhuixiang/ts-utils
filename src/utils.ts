@@ -192,7 +192,7 @@ export function checkStr(str: string, type: "phone" | "tel" | "card" | "pwd" | "
         case "date": // 日期时间
             return /^(\d{4})\-(\d{2})\-(\d{2}) (\d{2})(?:\:\d{2}|:(\d{2}):(\d{2}))$/.test(str) || /^(\d{4})\-(\d{2})\-(\d{2})$/.test(str);
         case "number": // 数字
-            return /^[0-9]$/.test(str);
+            return /^-?\d+$/.test(str);
         case "english": // 英文
             return /^[a-zA-Z]+$/.test(str);
         case "chinese": // 中文
