@@ -129,9 +129,10 @@ test("random", () => {
 });
 */
 
-import { Diff, ElementType, Intersection, Keys, Optional, Subtract, Values } from "../types";
-test("types", () => {
-    /** 
+// import { Diff, ElementType, Intersection, Keys, Optional, Subtract, Values } from "../types";
+// import Chance from "chance";
+// test("types", () => {
+/** 
     type Props = { name: string; age: number; visible: boolean };
     // Expect: string
     type NameType = ElementType<Props, "name">;
@@ -150,37 +151,54 @@ test("types", () => {
     // Expect: number
     type ValuesType = ElementType<Obj, string>;
     */
-    /** 
+/** 
     type Props = { name: string; age: number; visible: boolean };
 
     // Expect: "name" | "age" | "visible"
     type PropsKeys = Keys<Props>;
     let a: PropsKeys = "name";
     */
-    // type Props = { name: string; age: number; visible: boolean };
-    // Expect: string | number | boolean
-    // type PropsValues = Values<Props>;
-    // type Props = { name: string; age: number; visible: boolean };
-    // type DefaultProps = { age: number };
-    // Expect: { name: string; visible: boolean; }
-    // type RequiredProps = Diff<Props, DefaultProps>;
+// type Props = { name: string; age: number; visible: boolean };
+// Expect: string | number | boolean
+// type PropsValues = Values<Props>;
+// type Props = { name: string; age: number; visible: boolean };
+// type DefaultProps = { age: number };
+// Expect: { name: string; visible: boolean; }
+// type RequiredProps = Diff<Props, DefaultProps>;
 
-    // type Props = { name: string; age: number; visible: boolean };
-    // type DefaultProps = { age: number; address: string };
+// type Props = { name: string; age: number; visible: boolean };
+// type DefaultProps = { age: number; address: string };
 
-    // Expect: { age: number; }
-    // type DuplicatedProps = Intersection<Props, DefaultProps>;
+// Expect: { age: number; }
+// type DuplicatedProps = Intersection<Props, DefaultProps>;
 
-    // type Props = { name: string; age: number; visible: boolean };
-    // type DefaultProps = { age: number };
+// type Props = { name: string; age: number; visible: boolean };
+// type DefaultProps = { age: number };
 
-    // Expect: { name: string; visible: boolean; }
-    // type RequiredProps = Subtract<Props, DefaultProps>;
+// Expect: { name: string; visible: boolean; }
+// type RequiredProps = Subtract<Props, DefaultProps>;
 
-    type Props = { name: string; age: number; visible: boolean };
+// type Props = { name: string; age: number; visible: boolean };
 
-    // Expect: { name?: string; age?: number; visible?: boolean; }
-    type Props1 = Optional<Props>;
-    // Expect: { name: string; age?: number; visible?: boolean; }
-    type Props2 = Optional<Props, "age" | "visible">;
+// Expect: { name?: string; age?: number; visible?: boolean; }
+// type Props1 = Optional<Props>;
+// Expect: { name: string; age?: number; visible?: boolean; }
+// type Props2 = Optional<Props, "age" | "visible">;
+// });
+
+import { seedrandom } from "../seedrandom";
+test("seedrandom", () => {
+    let random1 = new seedrandom(12345);
+    let random2 = new seedrandom(12345);
+
+    // These yield the same values, in sequence
+    console.log(random1.random());
+    console.log(random2.random());
+
+    let random3 = new seedrandom("one");
+    let random4 = new seedrandom("two");
+
+    // These will be different
+    console.log(random3.random());
+    console.log(random4.random());
 });

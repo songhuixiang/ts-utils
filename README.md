@@ -159,6 +159,24 @@ random.normal(100, 15); // 例如，要获得一个随机的智商(它的平均�
 // => 93.9885340699105
 ```
 
+```typescript
+import { seedrandom } from "../seedrandom";
+
+let random1 = new seedrandom(12345);
+let random2 = new seedrandom(12345);
+
+// These yield the same values, in sequence
+console.log(random1.random());
+console.log(random2.random());
+
+let random3 = new seedrandom("one");
+let random4 = new seedrandom("two");
+
+// These will be different
+console.log(random3.random());
+console.log(random4.random());
+```
+
 # 通用类型 types
 
 为 TypeScript 项目提供一组通用类型，这些类型是惯用的，是现有 TypeScript 映射类型的补充。
