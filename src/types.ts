@@ -34,6 +34,10 @@ export type DeepReadonly<T> = T extends ((...args: any[]) => any) | Primitive ? 
 interface _DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
 type _DeepReadonlyObject<T> = { readonly [P in keyof T]: DeepReadonly<T[P]> };
 
+export type DeepRequired<T> = {
+    [P in keyof T]-?: T[P] extends object | undefined ? DeepRequired<T[P]> : T[P];
+};
+
 /**
  * get the type of elements inside of array, tuple or object of type T, that matches the given index type K
  * @example
