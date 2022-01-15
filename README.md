@@ -188,19 +188,8 @@ console.log(random4.random());
 ```typescript
 export type Primitive = string | number | bigint | boolean | symbol | null | undefined;
 export const isPrimitive = (val: unknown): val is Primitive => {
-    if (val === null || val === undefined) {
-        return true;
-    }
-    switch (typeof val) {
-        case "string":
-        case "number":
-        case "bigint":
-        case "boolean":
-        case "symbol":
-            return true;
-        default:
-            return false;
-    }
+    if (val === null || val === undefined) return true;
+    return ["string", "number", "bigint", "boolean", "symbol"].includes(typeof val);
 };
 ```
 
