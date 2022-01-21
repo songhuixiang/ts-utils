@@ -34,7 +34,7 @@ test("events", () => {
 });
 */
 
-import { timeoutPromise, delay, arrayDiff } from "../utils";
+// import { timeoutPromise, delay, arrayDiff } from "../utils";
 /** 
 test("timeoutPromise", () => {
     const doSomething = function () {
@@ -186,19 +186,45 @@ test("random", () => {
 // type Props2 = Optional<Props, "age" | "visible">;
 // });
 
-import { seedrandom } from "../seedrandom";
-test("seedrandom", () => {
-    let random1 = new seedrandom(12345);
-    let random2 = new seedrandom(12345);
+// import { seedrandom } from "../seedrandom";
+// test("seedrandom", () => {
+//     let random1 = new seedrandom(12345);
+//     let random2 = new seedrandom(12345);
 
-    // These yield the same values, in sequence
-    console.log(random1.random());
-    console.log(random2.random());
+//     // These yield the same values, in sequence
+//     console.log(random1.random());
+//     console.log(random2.random());
 
-    let random3 = new seedrandom("one");
-    let random4 = new seedrandom("two");
+//     let random3 = new seedrandom("one");
+//     let random4 = new seedrandom("two");
 
-    // These will be different
-    console.log(random3.random());
-    console.log(random4.random());
+//     // These will be different
+//     console.log(random3.random());
+//     console.log(random4.random());
+// });
+
+import { HttpClient } from "../httpclient";
+test("httpclient", async () => {
+    // const httpServer = new HttpClient("http://119.29.27.76:9001/");
+    // let ret = await httpServer.get("login?prodect=1");
+    // console.log("serverlist http response ", ret);
+
+    // const gameId = 1;
+    // const channel = "apple";
+    // const msg = "shx";
+    // const data = `game_id=${gameId}&game_channel=${channel}&nickname=${msg}`;
+    const iwpServerUrl = new HttpClient("https://iwppublic.shx.cn");
+    // let ret = JSON.parse((await iwpServerUrl.post("/wechat/checknickname", 5000, data, "application/x-www-form-urlencoded")) as string);
+    // console.log("校验返回的数据 ", ret);
+    // if (ret.code === "0") {
+    //     console.log("post success");
+    // } else {
+    //     console.log("校验错误");
+    // }
+
+    const key = "abc";
+    const playerId = 111;
+    const gameId = 111;
+    let ret = await iwpServerUrl.post("/client/v1/cdkey/exchange", 5000, `cdkey=${key}&user_id=${playerId}&game_id=${gameId}`);
+    console.log(JSON.parse(ret as string));
 });
