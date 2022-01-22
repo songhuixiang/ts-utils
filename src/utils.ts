@@ -216,3 +216,17 @@ export function checkStr(str: string, type: "phone" | "tel" | "card" | "pwd" | "
 export function clamp(min: number, max: number, val: number) {
     return Math.min(Math.max(min, +val), max);
 }
+
+/**
+ * Remove a specific item from an array.
+ * @param arr
+ * @param value
+ * @returns
+ */
+export function removeItem<T>(arr: Array<T>, value: T): Array<T> {
+    const index = arr.indexOf(value);
+    if (index > -1) {
+        arr.splice(index, 1);
+    }
+    return arr;
+}
