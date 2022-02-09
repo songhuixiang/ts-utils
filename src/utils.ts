@@ -208,25 +208,86 @@ export function checkStr(str: string, type: "phone" | "tel" | "card" | "pwd" | "
 
 /**
  * If you need to clamp a number to keep it inside a specific range boundary
+ * @param val
  * @param min
  * @param max
- * @param val
  * @returns
  */
-export function clamp(min: number, max: number, val: number) {
+export function clamp(val: number, min: number, max: number) {
     return Math.min(Math.max(min, +val), max);
 }
 
 /**
- * Remove a specific item from an array.
- * @param arr
- * @param value
- * @returns
+ * 检查 val 是否在 start 与 end 之间，但不包括 end。 如果 end 没有指定，那么 start 设置为0。 如果 start 大于 end，那么参数会交换以便支持负范围。
+ * @param val
+ * @param start
+ * @param end
+ * @returns val >= start && val < end
  */
-export function removeItem<T>(arr: Array<T>, value: T): Array<T> {
-    const index = arr.indexOf(value);
-    if (index > -1) {
-        arr.splice(index, 1);
+export function inRange(val: number, start: number, end?: number) {
+    if (end === undefined) {
+        end = start;
+        start = 0;
     }
-    return arr;
+    return val >= Math.min(start, end) && val < Math.max(start, end);
+}
+
+/**
+ * 移除数组array中所有和给定值相等的元素，这个方法会改变原数组。
+ * @param array 要修改的数组
+ * @param values 要删除的值
+ * @returns 返回 array.
+ */
+export function pull<T>(array: Array<T>, ...values: Array<T>) {
+    if (array != null && array.length && values != null && values.length) {
+        const length = values.length;
+        let index = -1;
+        if (array === values) {
+            values = [...values];
+        }
+        while (++index < length) {
+            let fromIndex = 0;
+            const value = values[index];
+            while ((fromIndex = array.indexOf(value, fromIndex)) > -1) {
+                array.splice(fromIndex, 1);
+            }
+        }
+        return array;
+    }
+    return array;
+}
+
+/**
+ * 移除数组中predicate（断言）返回为真值的所有元素，并返回移除元素组成的数组，这个方法会改变原数组。
+ * @param array 要修改的数组。
+ * @param predicate 每次迭代调用的函数。
+ * @returns 返回移除元素组成的新数组。
+ */
+export function remove<T>(array: Array<T>, predicate: (value: T, index: number, array: Array<T>) => boolean) {
+    const result: Array<T> = [];
+    if (!(array != null && array.length)) {
+        return result;
+    }
+    let index = -1;
+    const indexes = [];
+    const { length } = array;
+    while (++index < length) {
+        const value = array[index];
+        if (predicate(value, index, array)) {
+            result.push(value);
+            indexes.push(index);
+        }
+    }
+
+    let indexesLength = indexes.length;
+    const lastIndex = indexesLength - 1;
+    while (indexesLength--) {
+        let previous;
+        const index = indexes[indexesLength];
+        if (indexesLength === lastIndex || index !== previous) {
+            previous = index;
+            array.splice(index, 1);
+        }
+    }
+    return result;
 }
