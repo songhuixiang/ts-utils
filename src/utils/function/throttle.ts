@@ -24,14 +24,22 @@ export function throttle<T extends (...args: any) => any>(func: T, wait: number 
         trailing = "trailing" in options ? !!options.trailing : trailing;
     }
 
-    return debounce(func, wait, {
-        leading: leading,
-        maxWait: wait,
-        trailing: trailing,
-    });
+    return debounce(func, wait, { leading, trailing, maxWait: wait });
 }
 
 export interface ThrottleSettings {
     leading?: boolean | undefined;
     trailing?: boolean | undefined;
 }
+
+/** Example
+// Avoid excessively updating the position while scrolling.
+jQuery(window).on("scroll", throttle(updatePosition, 100));
+
+// Invoke `renewToken` when the click event is fired, but not more than once every 5 minutes.
+var throttled = throttle(renewToken, 300000, { trailing: false });
+jQuery(element).on("click", throttled);
+
+// Cancel the trailing throttled invocation.
+jQuery(window).on("popstate", throttled.cancel);
+ */

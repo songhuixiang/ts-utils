@@ -8,7 +8,7 @@
  * Note: If leading and trailing options are true, func is invoked on the trailing edge of the timeout only
  * if the the debounced function is invoked more than once during the wait timeout.
  *
- * See David Corbacho’s article for details over the differences between _.debounce and _.throttle.
+ * See David Corbacho’s article for details over the differences between debounce and throttle.
  *
  * @param func The function to debounce.
  * @param wait The number of milliseconds to delay. default value is 100.
@@ -168,3 +168,25 @@ export interface DebouncedFunc<T extends (...args: any[]) => any> {
      */
     flush(): ReturnType<T> | undefined;
 }
+
+/** Example
+// Avoid costly calculations while the window size is in flux.
+jQuery(window).on("resize", debounce(calculateLayout, 150));
+
+// Invoke `sendMail` when clicked, debouncing subsequent calls.
+jQuery(element).on(
+    "click",
+    debounce(sendMail, 300, {
+        leading: true,
+        trailing: false,
+    })
+);
+
+// Ensure `batchLog` is invoked once after 1 second of debounced calls.
+var debounced = debounce(batchLog, 250, { maxWait: 1000 });
+var source = new EventSource("/stream");
+jQuery(source).on("message", debounced);
+
+// Cancel the trailing debounced invocation.
+jQuery(window).on("popstate", debounced.cancel);
+ */
