@@ -1,14 +1,4 @@
-export type Primitive = string | number | bigint | boolean | symbol | null | undefined;
-export const isPrimitive = (val: unknown): val is Primitive => {
-    if (val === null || val === undefined) return true;
-    return ["string", "number", "bigint", "boolean", "symbol"].includes(typeof val);
-};
-
-export type Falsy = false | "" | 0 | null | undefined;
-export const isFalsy = (val: unknown): val is Falsy => !val;
-
-export type Nullish = null | undefined;
-export const isNullish = (val: unknown): val is Nullish => val == null;
+import { Primitive } from "./utils/lang/isPrimitive";
 
 export type DeepReadonly<T> = T extends ((...args: any[]) => any) | Primitive ? T : T extends _DeepReadonlyArray<infer U> ? _DeepReadonlyArray<U> : T extends _DeepReadonlyObject<infer V> ? _DeepReadonlyObject<V> : T;
 interface _DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
