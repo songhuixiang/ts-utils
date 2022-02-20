@@ -1,35 +1,4 @@
 /**
- * 为 Promise 添加超时限制
- */
-export function timeoutPromise<T extends Promise<T extends PromiseLike<infer U> ? U : T>>(targetPromise: T, timeSecond: number) {
-    let timeoutHandle: NodeJS.Timeout;
-    const timeoutLimitPromise = new Promise((res, rej) => {
-        timeoutHandle = setTimeout(() => rej(new Error("Timeout exceeded")), timeSecond * 1000);
-    });
-    // Promise.race([p1, p2, p3])里面哪个结果获得的快，就返回那个结果，不管结果本身是成功状态还是失败状态。
-    return Promise.race([targetPromise, timeoutLimitPromise]).then((res) => {
-        clearTimeout(timeoutHandle);
-        return res;
-    }) as T;
-}
-
-/**
- * 数组的差异
- */
-export function arrayDiff<T>(a: T[], b: T[]): T[] {
-    const setX = new Set(a);
-    const setY = new Set(b);
-    return [...a.filter((x) => !setY.has(x)), ...b.filter((x) => !setX.has(x))];
-}
-
-/**
- * 数组去重
- */
-export function uniqueArray<T>(arr: T[]): T[] {
-    return [...new Set(arr)];
-}
-
-/**
  * String 是否为 Json
  */
 export function isJSON(str: string) {

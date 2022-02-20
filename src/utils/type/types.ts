@@ -1,22 +1,3 @@
-import { Primitive } from "./utils/lang/isPrimitive";
-
-export type DeepReadonly<T> = T extends ((...args: any[]) => any) | Primitive ? T : T extends _DeepReadonlyArray<infer U> ? _DeepReadonlyArray<U> : T extends _DeepReadonlyObject<infer V> ? _DeepReadonlyObject<V> : T;
-interface _DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
-type _DeepReadonlyObject<T> = { readonly [P in keyof T]: DeepReadonly<T[P]> };
-
-export type DeepNonNullable<T> = T extends (...args: any[]) => any ? T : T extends any[] ? _DeepNonNullableArray<T[number]> : T extends object ? _DeepNonNullableObject<T> : T;
-export interface _DeepNonNullableArray<T> extends Array<DeepNonNullable<NonNullable<T>>> {}
-export type _DeepNonNullableObject<T> = { [P in keyof T]-?: DeepNonNullable<NonNullable<T[P]>> };
-
-export type DeepRequired<T> = T extends (...args: any[]) => any ? T : T extends any[] ? _DeepRequiredArray<T[number]> : T extends object ? _DeepRequiredObject<T> : T;
-export type NonUndefined<T> = T extends undefined ? never : T;
-export interface _DeepRequiredArray<T> extends Array<DeepRequired<NonUndefined<T>>> {}
-export type _DeepRequiredObject<T> = { [P in keyof T]-?: DeepRequired<NonUndefined<T[P]>> };
-
-export type DeepPartial<T> = T extends Function ? T : T extends Array<infer U> ? _DeepPartialArray<U> : T extends object ? _DeepPartialObject<T> : T | undefined;
-export interface _DeepPartialArray<T> extends Array<DeepPartial<T>> {}
-export type _DeepPartialObject<T> = { [P in keyof T]?: DeepPartial<T[P]> };
-
 /**
  * @example
  * type Props = { name: string; age: number; visible: boolean };
